@@ -23,16 +23,19 @@
     <h1>Compress Image Below 50KB, 100KB, or 200KB</h1>
     <p class="subtitle">Free online image compressor. Your files never leave your device.</p>
 
-    <!-- Hidden file input (Android safe) -->
+    <!-- Hidden file input -->
     <input
       type="file"
       id="imageInput"
       accept="image/jpeg,image/png"
-      style="display:none"
+      hidden
     />
 
-    <!-- Visible button -->
-    <button id="selectImageBtn">Select Image</button>
+    <!-- Upload area -->
+    <label for="imageInput" id="uploadArea" class="upload-area">
+      <strong>Tap to select image</strong>
+      <span>or drag & drop (desktop)</span>
+    </label>
 
     <select id="targetSize">
       <option value="50">50 KB</option>
@@ -42,7 +45,7 @@
 
     <button id="compressBtn">Compress Image</button>
 
-    <p id="formatNote" style="display:none; font-size:13px; color:#666; margin-top:8px;">
+    <p id="formatNote" class="note">
       Note: PNG images are automatically converted to JPG to achieve smaller file size.
     </p>
 
@@ -59,7 +62,7 @@
       <p><strong>What formats are supported?</strong> JPG, PNG.</p>
     </section>
 
-    <footer style="margin-top:30px; font-size:13px;">
+    <footer>
       <a href="privacy.html">Privacy Policy</a>
     </footer>
   </main>

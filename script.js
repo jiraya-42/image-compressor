@@ -17,25 +17,40 @@ function dataURLtoBlob(dataURL) {
 /* ================================
    DOM Elements
    ================================ */
-const formatNote = document.getElementById("formatNote");
 const imageInput = document.getElementById("imageInput");
-const selectImageBtn = document.getElementById("selectImageBtn");
+const uploadArea = document.getElementById("uploadArea");
 const compressBtn = document.getElementById("compressBtn");
 const targetSizeSelect = document.getElementById("targetSize");
 const result = document.getElementById("result");
 const preview = document.getElementById("preview");
 const sizeInfo = document.getElementById("sizeInfo");
 const downloadBtn = document.getElementById("downloadBtn");
+const formatNote = document.getElementById("formatNote");
 
 /* ================================
-   Android-safe file picker trigger
+   Drag & Drop (Desktop only)
    ================================ */
-selectImageBtn.addEventListener("click", () => {
-  imageInput.click();
+uploadArea.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  uploadArea.classList.add("drag-over");
+});
+
+uploadArea.addEventListener("dragleave", () => {
+  uploadArea.classList.remove("drag-over");
+});
+
+uploadArea.addEventListener("drop", (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove("drag-over");
+
+  const file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith("image/")) return;
+
+  imageInput.files = e.dataTransfer.files;
 });
 
 /* ================================
-   Compress Button Handler
+   Compress Button
    ================================ */
 compressBtn.addEventListener("click", () => {
   if (!imageInput.files.length) {
@@ -45,21 +60,14 @@ compressBtn.addEventListener("click", () => {
 
   const file = imageInput.files[0];
   const targetKB = parseInt(targetSizeSelect.value, 10);
-  const reader = new FileReader();
 
+  const reader = new FileReader();
   reader.onload = function (e) {
     const img = new Image();
-
     img.onload = () => {
-      if (file.type === "image/png") {
-        formatNote.style.display = "block";
-      } else {
-        formatNote.style.display = "none";
-      }
-
+      formatNote.style.display = file.type === "image/png" ? "block" : "none";
       compressImage(img, targetKB);
     };
-
     img.src = e.target.result;
   };
 
@@ -67,7 +75,7 @@ compressBtn.addEventListener("click", () => {
 });
 
 /* ================================
-   Core Compression Logic
+   Compression Logic
    ================================ */
 function compressImage(img, targetKB) {
   const canvas = document.createElement("canvas");
@@ -92,12 +100,10 @@ function compressImage(img, targetKB) {
   downloadBtn.href = compressedDataUrl;
   downloadBtn.download = "compressed.jpg";
 
-  if (finalSizeKB > targetKB) {
-    sizeInfo.innerText =
-      `Final size: ${finalSizeKB} KB (Target size not reachable without heavy quality loss)`;
-  } else {
-    sizeInfo.innerText = `Final size: ${finalSizeKB} KB`;
-  }
+  sizeInfo.innerText =
+    finalSizeKB > targetKB
+      ? `Final size: ${finalSizeKB} KB (Target not reachable without heavy quality loss)`
+      : `Final size: ${finalSizeKB} KB`;
 
   result.classList.remove("hidden");
 }

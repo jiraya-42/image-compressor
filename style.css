@@ -1,72 +1,27 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 25px;
+.upload-area {
+  border: 2px dashed #cbd5e1;
+  padding: 24px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-h1 {
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-input, select, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-}
-
-button {
-  background: #0066ff;
-  color: #fff;
-  border: none;
   cursor: pointer;
+  text-align: center;
+  margin: 16px 0;
 }
 
-button:hover {
-  background: #004fd1;
+.upload-area span {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
 }
 
-#result {
-  margin-top: 20px;
+.upload-area.drag-over {
+  border-color: #2563eb;
+  background: #f1f5f9;
 }
 
-#preview {
-  max-width: 100%;
-  margin-top: 10px;
-}
-
-#downloadBtn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: #28a745;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.hidden {
+.note {
   display: none;
-}
-
-.faq {
-  margin-top: 30px;
-  text-align: left;
-  font-size: 14px;
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
 }
