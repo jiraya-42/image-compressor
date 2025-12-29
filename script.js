@@ -26,11 +26,9 @@ uploadArea.addEventListener("dragover", e => {
   e.preventDefault();
   uploadArea.classList.add("drag-over");
 });
-
 uploadArea.addEventListener("dragleave", () => {
   uploadArea.classList.remove("drag-over");
 });
-
 uploadArea.addEventListener("drop", e => {
   e.preventDefault();
   uploadArea.classList.remove("drag-over");
@@ -52,39 +50,59 @@ compressBtn.addEventListener("click", () => {
     const img = new Image();
     img.onload = () => {
       formatNote.style.display = file.type === "image/png" ? "block" : "none";
-      compressImage(img, targetKB);
+      textSafeCompress(img, targetKB);
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 });
 
-function compressImage(img, targetKB) {
+/* TEXT-SAFE COMPRESSION */
+function textSafeCompress(img, targetKB) {
+  let width = img.width;
+  let height = img.height;
+
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  canvas.width = img.width;
-  canvas.height = img.height;
-  ctx.drawImage(img, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingQuality = "high";
 
+  let dataUrl, blob;
   let quality = 0.9;
-  let dataUrl;
 
-  do {
-    dataUrl = canvas.toDataURL("image/jpeg", quality);
-    quality -= 0.05;
-  } while (dataUrl.length / 1024 > targetKB && quality > 0.1);
+  while (true) {
+    canvas.width = width;
+    canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
 
-  const blob = dataURLtoBlob(dataUrl);
+    quality = 0.9;
+    do {
+      dataUrl = canvas.toDataURL("image/jpeg", quality);
+      blob = dataURLtoBlob(dataUrl);
+      quality -= 0.05;
+    } while (blob.size / 1024 > targetKB && quality >= 0.75);
+
+    if (blob.size / 1024 <= targetKB || width <= 900) {
+      break;
+    }
+
+    /* Gradual downscale (preserves text) */
+    width = Math.round(width * 0.9);
+    height = Math.round(height * 0.9);
+  }
+
   const finalSizeKB = Math.round(blob.size / 1024);
 
   preview.src = dataUrl;
   downloadBtn.href = dataUrl;
+  downloadBtn.download = "compressed.jpg";
 
   sizeInfo.innerText =
-    finalSizeKB > targetKB
-      ? `Final size: ${finalSizeKB} KB (Target not reachable without heavy quality loss)`
-      : `Final size: ${finalSizeKB} KB`;
+    finalSizeKB <= targetKB
+      ? `Final size: ${finalSizeKB} KB`
+      : `Final size: ${finalSizeKB} KB (Quality preserved to avoid text blur)`;
 
   result.classList.remove("hidden");
 }
