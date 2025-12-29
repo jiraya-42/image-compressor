@@ -19,6 +19,7 @@ function dataURLtoBlob(dataURL) {
    ================================ */
 const formatNote = document.getElementById("formatNote");
 const imageInput = document.getElementById("imageInput");
+const selectImageBtn = document.getElementById("selectImageBtn");
 const compressBtn = document.getElementById("compressBtn");
 const targetSizeSelect = document.getElementById("targetSize");
 const result = document.getElementById("result");
@@ -27,7 +28,14 @@ const sizeInfo = document.getElementById("sizeInfo");
 const downloadBtn = document.getElementById("downloadBtn");
 
 /* ================================
-   Click Handler
+   Android-safe file picker trigger
+   ================================ */
+selectImageBtn.addEventListener("click", () => {
+  imageInput.click();
+});
+
+/* ================================
+   Compress Button Handler
    ================================ */
 compressBtn.addEventListener("click", () => {
   if (!imageInput.files.length) {
@@ -43,7 +51,6 @@ compressBtn.addEventListener("click", () => {
     const img = new Image();
 
     img.onload = () => {
-      // UX note (no popup)
       if (file.type === "image/png") {
         formatNote.style.display = "block";
       } else {
@@ -73,17 +80,14 @@ function compressImage(img, targetKB) {
   let quality = 0.9;
   let compressedDataUrl;
 
-  // Iterative compression loop
   do {
     compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
     quality -= 0.05;
   } while (compressedDataUrl.length / 1024 > targetKB && quality > 0.1);
 
-  // Accurate size calculation
   const blob = dataURLtoBlob(compressedDataUrl);
   const finalSizeKB = Math.round(blob.size / 1024);
 
-  // UI updates
   preview.src = compressedDataUrl;
   downloadBtn.href = compressedDataUrl;
   downloadBtn.download = "compressed.jpg";

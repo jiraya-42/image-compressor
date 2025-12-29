@@ -23,7 +23,16 @@
     <h1>Compress Image Below 50KB, 100KB, or 200KB</h1>
     <p class="subtitle">Free online image compressor. Your files never leave your device.</p>
 
-    <input type="file" id="imageInput" accept="image/*" />
+    <!-- Hidden file input (Android safe) -->
+    <input
+      type="file"
+      id="imageInput"
+      accept="image/jpeg,image/png"
+      style="display:none"
+    />
+
+    <!-- Visible button -->
+    <button id="selectImageBtn">Select Image</button>
 
     <select id="targetSize">
       <option value="50">50 KB</option>
