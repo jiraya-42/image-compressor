@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Compress Image Below 50KB, 100KB, 200KB Online</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Compress JPG or PNG images below 50KB, 100KB, or 200KB online. Fast, free, and works completely in your browser." />
+  <meta name="keywords" content="compress image below 200kb, compress image below 100kb, compress image below 50kb" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main class="container">
+    <h1>Compress Image Below 50KB, 100KB, or 200KB</h1>
+    <p class="subtitle">Free online image compressor. Your files never leave your device.</p>
+
+    <input type="file" id="imageInput" accept="image/*" />
+
+    <select id="targetSize">
+      <option value="50">50 KB</option>
+      <option value="100">100 KB</option>
+      <option value="200" selected>200 KB</option>
+    </select>
+
+    <button id="compressBtn">Compress Image</button>
+
+    <p id="formatNote" style="display:none; font-size:13px; color:#666; margin-top:8px;">
+      Note: PNG images are automatically converted to JPG to achieve smaller file size.
+    </p>
+
+    <div id="result" class="hidden">
+      <p id="sizeInfo"></p>
+      <img id="preview" />
+      <a id="downloadBtn" download="compressed-image.jpg">Download Image</a>
+    </div>
+
+    <section class="faq">
+      <h2>Frequently Asked Questions</h2>
+      <p><strong>Is this safe?</strong> Yes. All processing happens in your browser.</p>
+      <p><strong>Do you upload my image?</strong> No. Nothing is sent to a server.</p>
+      <p><strong>What formats are supported?</strong> JPG, PNG.</p>
+    </section>
+
+    <footer style="margin-top:30px; font-size:13px;">
+      <a href="privacy.html">Privacy Policy</a>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
